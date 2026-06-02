@@ -1,10 +1,14 @@
-{% extends 'base.html' %}
-    {% block title %}Recipe List{% endblock %}
-    {% block page_heading %}Recipe List{% endblock %}
-    {% block content %}
-    <p><a href="{% url 'ledger:recipe-add' %}">Create Recipe</a></p>
+{% extends "base.html" %}
 
-    {% for recipe in recipes %}
-        <h3><a href="{{recipe.get_absolute_url}}">{{recipe.name}}</a></h2>
-    {% endfor %}
+{% block content %}
+<div class="container">
+    <div class="recipe-grid">
+        {% for recipe in recipes %}
+        <div class="recipe-card">
+            <h3><a href="{{recipe.get_absolute_url}}">{{recipe.name}}</a></h3>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'ledger:recipe-add' %}">Create New Recipe</a>
+</div>
 {% endblock %}

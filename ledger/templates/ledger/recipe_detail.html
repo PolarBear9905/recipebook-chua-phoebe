@@ -3,17 +3,19 @@
 {% block title %}Recipe Detail{% endblock %}
     {% block page_heading %}{{recipe.name}} made by {{recipe.author.name}}{% endblock %}
     {% block content %}
-        <h3>Ingredients:</h3>
+         {% for image in recipe.images.all %}
+            <img src ="{{image.image.url}}" alt ="{{image.description}}"width="350">
+        {% endfor %}
+        
+        <h3>Ingredients</h3>
         <ul>
-        {% for ingredient in recipe.ingredients.all %}
-            <li>{{ingredient.quantity}}, {{ingredient.ingredient.name}} </li>
-        {% endfor %}
+            {% for item in recipe.ingredients.all %}
+                <li>{{item.quantity}} <b>{{item.ingredient.name}}</b></li>
+            {% empty %}
+                <li>No ingredients yet</li>
+            {% endfor %}
         </ul>
-
-        {% for image in recipe.images.all %}
-            <img src ="{{image.image.url}}" alt ="{{image.description}}"width="200">
-        {% endfor %}
-
-        <p><a href="{%url 'ledger:recipe-add-image' recipe.pk %}">Create Image</a></p>
+        <a href="{% url 'ledger:recipe-add-image' pk=recipe.pk %}">Create Image</a></p>
+        <a href="{% url 'ledger:recipe-add-ingredient' pk=recipe.pk %}">Add Ingredient</a></p>
         
 {% endblock %}
