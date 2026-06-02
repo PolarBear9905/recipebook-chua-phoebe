@@ -14,8 +14,6 @@
             <img src ="{{image.image.url}}" alt ="{{image.description}}"width="200">
         {% endfor %}
 
-        {% if user.is_authenticated %}
         <p><a href="{%url 'ledger:recipe-add-image' recipe.pk %}">Create Image</a></p>
-        {% endif %}
         
 {% endblock %}

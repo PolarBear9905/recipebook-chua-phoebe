@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Recipe, Profile
-
 from .forms import RecipeForm, RecipeImageForm
 
 
@@ -23,7 +22,11 @@ def recipe_add(request):
         form = RecipeForm(request.POST)
         if form.is_valid():
             recipe = form.save(commit=False)
-            recipe.author = request.user.profile
+            profile, _ = Profile.objects.get_or_create(
+                user=request.user,
+                defaults={'name': request.user.username}
+            )
+            recipe.author = profile
             recipe.save()
             return redirect('ledger:recipe-detail', pk=recipe.pk)
     else:
