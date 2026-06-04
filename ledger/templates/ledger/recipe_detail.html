@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}Recipe Detail{% endblock %}
     {% block page_heading %}{{recipe.name}} made by {{recipe.author.name}}{% endblock %}
     {% block content %}
-         {% for image in recipe.images.all %}
+        {% for image in recipe.images.all %}
             <img src ="{{image.image.url}}" alt ="{{image.description}}"width="350">
+            <p>{{image.description}}</p>
+        {% empty %}
+            <p> No images yet</p>
         {% endfor %}
-        
         <h3>Ingredients</h3>
         <ul>
             {% for item in recipe.ingredients.all %}
@@ -15,7 +18,6 @@
                 <li>No ingredients yet</li>
             {% endfor %}
         </ul>
-        <a href="{% url 'ledger:recipe-add-image' pk=recipe.pk %}">Create Image</a></p>
-        <a href="{% url 'ledger:recipe-add-ingredient' pk=recipe.pk %}">Add Ingredient</a></p>
+        <a href="{% url 'ledger:recipe-edit' pk=recipe.pk %}">Edit</a></p>
         
 {% endblock %}

@@ -1,13 +1,51 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Create Recipe{% endblock %}
+{% block title %}
+  {% if recipe %}Edit Recipe: {{ recipe.name }}{% else %}Create Recipe{% endif %}
+{% endblock %}
 
 {% block content %}
-  <h2>Create Recipe</h2>
+  <h2>
+    {% if recipe %}Update Recipe{% else %}Create Recipe{% endif %}
+  </h2>
 
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Submit">
+
+    <h3>Ingredients</h3>
+    {{ ingredient_formset.management_form }}
+    {% for f in ingredient_formset %}
+      <div>
+        {{ f.quantity }} {{ f.ingredient }}
+        {% if f.instance.pk %}{{ f.DELETE }}{% endif %}
+      </div>
+    {% endfor %}
+
+    <h3>Images</h3>
+    {{ image_formset.management_form }}
+    {% for f in image_formset %}
+      <div>
+        {{ f.image }}
+        {% if f.instance.pk %}{{ f.DELETE }}{% endif %}
+      </div>
+    {% endfor %}
+
+
+    <button type="submit">
+      {% if recipe %}Save Changes{% else %}Create Recipe{% endif %}
+    </button>
   </form>
+
+    {% if recipe %}
+      <a href="{% url 'ledger:recipe-detail' recipe.pk %}">
+        Back to Recipe
+      </a>
+    {% else %}
+      <a href="{% url 'ledger:recipe-list' %}">
+        Cancel
+      </a>
+    {% endif %}
+
 {% endblock %}

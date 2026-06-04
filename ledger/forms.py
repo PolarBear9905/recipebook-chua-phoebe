@@ -1,17 +1,12 @@
 from django import forms
+from django.forms import inlineformset_factory
 from .models import Recipe, RecipeImage, RecipeIngredient, Ingredient
 
 
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        fields = ['name']
-
-
-class RecipeImageForm(forms.ModelForm):
-    class Meta:
-        model = RecipeImage
-        fields = ['image', 'description']
+        fields = ['name', 'description']
 
 
 class RecipeIngredientForm(forms.ModelForm):
@@ -20,3 +15,16 @@ class RecipeIngredientForm(forms.ModelForm):
     class Meta:
         model = RecipeIngredient
         fields = ['ingredient', 'quantity']
+
+IngredientFormSet = inlineformset_factory(
+    Recipe, RecipeIngredient,
+    form=RecipeIngredientForm,
+    extra=3,
+    can_delete=True
+)
+ImageFormSet = inlineformset_factory(
+    Recipe, RecipeImage,
+    fields=['image'],
+    extra=1,
+    can_delete=True
+)

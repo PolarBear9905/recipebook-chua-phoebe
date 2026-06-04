@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Recipe, Profile
-from .forms import RecipeForm, RecipeImageForm, RecipeIngredientForm
+from .models import Recipe, Profile, Ingredient, RecipeIngredient
+from .forms import RecipeForm, IngredientFormSet, ImageFormSet 
 
 
 def recipe_list(request):
@@ -20,7 +20,10 @@ def recipe_detail(request, pk):
 def recipe_add(request):
     if request.method == "POST":
         form = RecipeForm(request.POST)
-        if form.is_valid():
+        ingredient_formset= IngredientFormSet(request.POST, prefix='ingredients')
+        image_formset = ImageFormSet(request.POST, request.FILES, prefix='images')
+
+        if form.is_valid() and ingredient_formset.is_valid() and image_formset.is_valid():
             recipe = form.save(commit=False)
             profile, _ = Profile.objects.get_or_create(
                 user=request.user,
@@ -28,45 +31,69 @@ def recipe_add(request):
             )
             recipe.author = profile
             recipe.save()
+
+            for ingredient_form in ingredient_formset:
+                if ingredient_form.cleaned_data.get('ingredient'):
+                    ingredient, _ = Ingredient.objects.get_or_create(
+                        name=ingredient_form.cleaned_data['ingredient']
+                    )
+                    RecipeIngredient.objects.create(
+                        recipe=recipe,
+                        ingredient=ingredient,
+                        quantity=ingredient_form.cleaned_data['quantity']
+                    )
+            images = image_formset.save(commit=False)
+            for image in images:
+                image.recipe = recipe
+                images.save()
+
             return redirect('ledger:recipe-detail', pk=recipe.pk)
     else:
         form = RecipeForm()
+        ingredient_formset = IngredientFormSet(prefix='ingredients')
+        image_formset = ImageFormSet(prefix='images')
 
-    ctx = {"form": form}
+    ctx = {
+        "form": form,
+        "ingredient_formset": ingredient_formset,
+        "image_formset": image_formset,
+    }
     return render(request, "ledger/recipe_form.html", ctx)
 
 
 @login_required
-def recipe_add_image(request, pk):
-    recipe = Recipe.objects.get(pk=pk)
+def recipe_edit(request,pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
 
     if request.method == "POST":
-        form = RecipeImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            image = form.save(commit=False)
-            image.recipe = recipe
-            image.save()
+        form = RecipeForm(request.POST, instance=recipe)
+        ingredient_formset = IngredientFormSet(request.POST, instance=recipe, prefix='ingredients')
+        image_formset = ImageFormSet(request.POST, request.FILES, instance=recipe, prefix='images')
+        
+        if form.is_valid() and ingredient_formset.is_valid() and image_formset.is_valid():
+            form.save()
+            ingredient_formset.save()
+            image_formset.save()
             return redirect('ledger:recipe-detail', pk=recipe.pk)
     else:
-        form = RecipeImageForm()
+        form = RecipeForm(instance=recipe)
+        ingredient_formset = IngredientFormSet(instance=recipe, prefix='ingredients')
+        image_formset = ImageFormSet(instance=recipe, prefix='images')
+    
+    ctx = {
+        "form": form,
+        "recipe": recipe,
+        "ingredient_formset": ingredient_formset,
+        "image_formset": image_formset,
+    }
+    return render(request, "ledger/recipe_form.html", ctx)
 
-    ctx = {"form": form, "recipe": recipe}
-    return render(request, "ledger/recipe_form_generic.html", ctx)
 
 @login_required
-def recipe_add_ingredient(request, pk):
-    recipe = Recipe.objects.get(pk=pk)
+def recipe_delete(request,pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+    if request.method=="POST":
+        recipe.delete()
+        return redirect('ledger: recipe-list')
 
-    if request.method == "POST":
-        form = RecipeIngredientForm(request.POST)
-        if form.is_valid():
-            ingredient = form.save(commit=False)
-            ingredient.recipe = recipe
-            ingredient.save()
-            return redirect('ledger:recipe-detail', pk=recipe.pk)
-    else:
-        form = RecipeIngredientForm()
-    
-    ctx = {"form": form, "recipe": recipe}
-    return render(request, "ledger/recipe_form_generic.html", ctx)
 

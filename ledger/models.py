@@ -34,6 +34,8 @@ class Recipe(models.Model):
         blank=True
     )
 
+    description = models.TextField()
+
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -42,6 +44,11 @@ class Recipe(models.Model):
 
     def get_absolute_url(self):
         return reverse('ledger:recipe-detail', args=[str(self.pk)])
+    
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'recipe'
+        verbose_name_plural = 'recipes'
 
 
 class RecipeIngredient(models.Model):
@@ -62,7 +69,6 @@ class RecipeIngredient(models.Model):
 
 class RecipeImage(models.Model):
     image = models.ImageField(upload_to='images/', null=False)
-    description = models.CharField(max_length=255)
 
     recipe = models.ForeignKey(
         Recipe,
