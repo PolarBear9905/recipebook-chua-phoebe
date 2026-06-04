@@ -18,8 +18,8 @@
     {{ ingredient_formset.management_form }}
     {% for f in ingredient_formset %}
       <div>
+        {{ f.id }} {# this renders as a hidden input type="hidden" containing the primary key #}
         {{ f.quantity }} {{ f.ingredient }}
-        {% if f.instance.pk %}{{ f.DELETE }}{% endif %}
       </div>
     {% endfor %}
 
@@ -27,25 +27,23 @@
     {{ image_formset.management_form }}
     {% for f in image_formset %}
       <div>
+        {{ f.id }}
         {{ f.image }}
-        {% if f.instance.pk %}{{ f.DELETE }}{% endif %}
       </div>
     {% endfor %}
-
 
     <button type="submit">
       {% if recipe %}Save Changes{% else %}Create Recipe{% endif %}
     </button>
   </form>
 
-    {% if recipe %}
-      <a href="{% url 'ledger:recipe-detail' recipe.pk %}">
-        Back to Recipe
-      </a>
-    {% else %}
-      <a href="{% url 'ledger:recipe-list' %}">
-        Cancel
-      </a>
-    {% endif %}
-
+  {% if recipe %}
+    <a href="{% url 'ledger:recipe-detail' recipe.pk %}">
+      Back to Recipe
+    </a>
+  {% else %}
+    <a href="{% url 'ledger:recipe-list' %}">
+      Cancel
+    </a>
+  {% endif %}
 {% endblock %}

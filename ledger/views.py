@@ -12,7 +12,8 @@ def recipe_list(request):
 
 @login_required
 def recipe_detail(request, pk):
-    ctx = {"recipe": Recipe.objects.get(pk=pk)}
+    recipe = get_object_or_404(Recipe, pk=pk)
+    ctx = {"recipe": recipe}
     return render(request, "ledger/recipe_detail.html", ctx)
 
 
@@ -34,18 +35,16 @@ def recipe_add(request):
 
             for ingredient_form in ingredient_formset:
                 if ingredient_form.cleaned_data.get('ingredient'):
-                    ingredient, _ = Ingredient.objects.get_or_create(
-                        name=ingredient_form.cleaned_data['ingredient']
-                    )
                     RecipeIngredient.objects.create(
                         recipe=recipe,
-                        ingredient=ingredient,
+                        ingredient=ingredient_form.cleaned_data['ingredient'],
                         quantity=ingredient_form.cleaned_data['quantity']
                     )
+            
             images = image_formset.save(commit=False)
             for image in images:
                 image.recipe = recipe
-                images.save()
+                image.save()
 
             return redirect('ledger:recipe-detail', pk=recipe.pk)
     else:
@@ -72,28 +71,45 @@ def recipe_edit(request,pk):
         
         if form.is_valid() and ingredient_formset.is_valid() and image_formset.is_valid():
             form.save()
-            ingredient_formset.save()
-            image_formset.save()
+            
+            for ingredient_form in ingredient_formset:
+                if ingredient_form.cleaned_data.get('ingredient'):
+                    if ingredient_form.instance.pk:
+                        ingredient_form.instance.ingredient = ingredient_form.cleaned_data['ingredient']
+                        ingredient_form.instance.quantity = ingredient_form.cleaned_data['quantity']
+                        ingredient_form.instance.save()
+                    else:
+                        RecipeIngredient.objects.create(
+                        recipe=recipe,
+                        ingredient=ingredient_form.cleaned_data['ingredient'],
+                        quantity=ingredient_form.cleaned_data['quantity']
+                    )
+            
+            images = image_formset.save(commit=False)
+            for image in images:
+                image.recipe = recipe
+                image.save()
+
             return redirect('ledger:recipe-detail', pk=recipe.pk)
     else:
         form = RecipeForm(instance=recipe)
         ingredient_formset = IngredientFormSet(instance=recipe, prefix='ingredients')
         image_formset = ImageFormSet(instance=recipe, prefix='images')
-    
+        
     ctx = {
-        "form": form,
-        "recipe": recipe,
-        "ingredient_formset": ingredient_formset,
-        "image_formset": image_formset,
+    "form": form,
+    "recipe": recipe,
+    "ingredient_formset": ingredient_formset,
+    "image_formset": image_formset,
     }
     return render(request, "ledger/recipe_form.html", ctx)
-
+    
 
 @login_required
-def recipe_delete(request,pk):
+def recipe_delete(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
-    if request.method=="POST":
+    if request.method == "POST":
         recipe.delete()
-        return redirect('ledger: recipe-list')
-
-
+        return redirect('ledger:recipe-list')
+    ctx = {'recipe': recipe}
+    return render(request, "ledger/recipe_delete.html", ctx)

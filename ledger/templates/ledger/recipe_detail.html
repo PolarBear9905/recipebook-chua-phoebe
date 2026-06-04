@@ -18,6 +18,7 @@
                 <li>No ingredients yet</li>
             {% endfor %}
         </ul>
-        <a href="{% url 'ledger:recipe-edit' pk=recipe.pk %}">Edit</a></p>
-        
+        <a href="{% url 'ledger:recipe-edit' pk=recipe.pk %}">Edit</a>
+        <a href="{% url 'ledger:recipe-delete' pk=recipe.pk %}">Delete</a></p>
+   
 {% endblock %}

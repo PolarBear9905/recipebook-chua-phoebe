@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Delete Recipe{% endblock %}
+{% block content %}
+    <h2>Delete Recipe</h2>
+    <p> Do you want to delete {{ recipe.name }} made by {{ recipe.author.name}}?</p>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <button type="submit">Confirm</button>
+    </form>
+    <a href="{% url 'ledger:recipe-list' %}">
+{% endblock %}
