@@ -5,11 +5,11 @@
     {% block page_heading %}{{recipe.name}} made by {{recipe.author.name}}{% endblock %}
     {% block content %}
         {% for image in recipe.images.all %}
-            <img src ="{{image.image.url}}" alt ="{{image.description}}"width="350">
-            <p>{{image.description}}</p>
+            <img src ="{{image.image.url}}" alt ="{{image.description}}"width="300"height="300">
         {% empty %}
             <p> No images yet</p>
         {% endfor %}
+        <p>{{recipe.description}}</p>
         <h3>Ingredients</h3>
         <ul>
             {% for item in recipe.ingredients.all %}
