@@ -1,14 +1,42 @@
 {% extends 'base.html' %}
-    {% block title %}Login{% endblock %}
-
     {% block content %}
-    <h2>Login</h2>
-        <form method="POST">
-            {% csrf_token %}
-            {{form.as_p}}
-            <button type = "submit">Login</button>
-        </form>
-        <p>
-            <a href="{% url 'password_reset' %}">Forgot password?</a>
-        </p>
+    <main class="bg-gray-50 px-4 md:px-8">
+    <div class="min-h-screen flex flex-col items-center justify-center">
+        <div class="max-w-md w-full">
+            <div
+                class="p-6 rounded-lg bg-white border border-slate-300 shadow-xs md:p-8">
+                <h1 class="text-slate-900 text-center text-3xl font-bold">Login</h1>
+
+                <form method="POST" class="space-y-6 mt-10">
+                    {% csrf_token %}                    
+                    <div>
+                        <label for="username"
+                            class="mb-2 text-slate-900 font-medium text-sm inline-block">Username</label>
+                        <input type="username" id="username" name="username" placeholder="admin" required
+                            class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
+                    </div>
+                    
+                    <div>
+                        <label for="password"
+                            class="mb-2 text-slate-900 font-medium text-sm inline-block">Password</label>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required
+                            class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-2 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                        Login
+                    </button>       
+                    <div class="text-center">
+                        <a href="{% url 'password_reset' %}"
+                            class="ml-auto text-sm font-medium text-blue-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
+                            Forgot password?
+                        </a>
+                    </div>         
+                </form>
+                
+            </div>
+        </div>
+    </div>
+    </main>
 {% endblock %}

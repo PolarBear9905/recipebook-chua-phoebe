@@ -1,30 +1,44 @@
 {% load static %}
+{% load static tailwind_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block page_title %}Recipe Book{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% tailwind_css %}
     {% block styles %}{% endblock %}
 </head>
-<body>
-    <header class="header">
-        <h1><a href="{% url 'ledger:recipe-list' %}">Recipe Book</a></h1>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
+    <header class="bg-gray-800 text-white px-6 py-4 flex justify-between items-center shadow">
+        <h1 class="text-2xl font-bold">
+            <a href="{% url 'ledger:recipe-list' %}" class="hover:cursor-pointer">Recipe Book</a>
+        </h1>
         <div>
             {% if user.is_authenticated %}
                 <form method="POST" action="{% url 'logout' %}">
                     {% csrf_token %}
-                    <button type="submit">Logout</button>
+                    <button type="submit" class="cursor-pointer hover:font-medium">
+                        Logout
+                    </button>
                 </form>
             {% else %}
-                <a href="{% url 'login' %}"><button type="button">Login</button></a>
+                <a href="{% url 'login' %}" class="font-medium hover:cursor-pointer">
+                    Login
+                </a>
             {% endif %}
         </div>
     </header>
 
-    <h2>{% block page_heading %}{% endblock %}</h2>
+    <main class="flex-1 container mx-auto p-6">
+        {% block page_heading %}{% endblock %}
+        {% block content %}{% endblock %}
+    </main>
 
-    {% block content %}{% endblock %}
+    <footer class="bg-gray-800 text-white text-center p-4 mt-auto">
+        &copy;2026 Recipe Book. All Rights Reserved.
+    </footer>
+
 </body>
 </html>
