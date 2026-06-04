@@ -26,6 +26,6 @@ IngredientFormSet = inlineformset_factory(
 ImageFormSet = inlineformset_factory(
     Recipe, RecipeImage,
     fields=['image'],
-    extra=1,
+    extra=0, #sheesh django adds automatically blank slot so its gulo2 
     can_delete=True
 )

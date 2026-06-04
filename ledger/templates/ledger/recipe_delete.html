@@ -1,13 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}Delete Recipe{% endblock %}
 {% block content %}
-    <h2>Delete Recipe</h2>
-    <p> Do you want to delete <b>{{ recipe.name }}</b> made by {{ recipe.author.name}}?</p>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <button type="submit">Confirm</button>
-    </form>
-    <a href="{% url 'ledger:recipe-list' %}">
+<div class="min-h-screen flex flex-col items-center justify-center">
+    <div class="max-w-md w-full">
+        <div class="p-6 rounded-lg bg-white border border-slate-300 shadow-xs md:p-8 space-y-6">
+            <h2 class="text-slate-900 text-center text-2xl font-bold">Delete Recipe</h2>
+            
+            <p class="text-center text-gray-600">
+                Are you sure you want to delete <b>{{ recipe.name }}</b> recipe?
+                <br>This action cannot be undone.
+            </p>
+
+            <form method="POST" class="flex gap-4">
+                {% csrf_token %}
+                <a href="{% url 'ledger:recipe-detail' recipe.pk %}"
+                    class="flex-1 text-center py-2 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-black border border-slate-300 hover:bg-gray-100">
+                    Cancel
+                </a>
+                <button type="submit"
+                    class="flex-1 py-2 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-red-800 bg-red-500 hover:bg-red-800">
+                    Confirm
+                </button>
+            </form>
+        </div>
+    </div>        
+</div>
 {% endblock %}

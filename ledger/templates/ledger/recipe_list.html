@@ -2,14 +2,50 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
-    <div class="recipe-grid">
-        {% for recipe in recipes %}
-        <div class="recipe-card">
-            <h3><a href="{{recipe.get_absolute_url}}">{{recipe.name}}</a></h3>
-        </div>
-        {% endfor %}
+<section class="mt-6 px-4 md:px-8">
+    <div class="mx-auto max-w-4xl lg:max-w-7xl">
+        <h2 class="text-3xl font-bold text-slate-900 mb-8">Recipes</h2>
+
+        <ul class="grid grid-cols-2 gap-4 md:gap-8 sm:grid-cols-3 lg:grid-cols-4">
+            {% for recipe in recipes %}
+            <li class="bg-white flex flex-col rounded-md border border-slate-200 shadow-sm relative">
+
+                <a href="{{ recipe.get_absolute_url }}"
+                    class="rounded-t-md block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                    {% if recipe.images.first %}
+                        <img src="{{ recipe.images.first.image.url }}" alt="{{ recipe.name }}"
+                            class="w-full aspect-[18/24] object-cover object-top"/>
+                    {% else %}
+                        <div class="w-full aspect-[18/24] bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+                            No image
+                        </div>
+                    {% endif %}
+                <div class="p-4">
+                    <h3 class="text-sm md:text-base font-semibold text-slate-900 line-clamp-2">
+                        {{ recipe.name }}
+                    </h3>
+                </div>
+                </a>
+
+                <div class="p-4 pt-0">
+                    <a href="{{ recipe.get_absolute_url }}"
+                        class="block w-full text-center text-sm px-3.5 py-2 font-semibold rounded-md bg-blue-600 hover:bg-blue-700 text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                        View Recipe
+                    </a>
+                </div>
+
+            </li>
+            {% empty %}
+                <li class="col-span-full text-center text-gray-400">No recipes yet</li>
+            {% endfor %}
+        </ul>
+
     </div>
-    <a href="{% url 'ledger:recipe-add' %}">Create New Recipe</a>
-</div>
+</section>
+
+<a href="{% url 'ledger:recipe-add' %}"
+    class="fixed bottom-6 right-6 w-20 h-20 bg-blue-600 hover:bg-blue-700 text-white text-4xl font-bold rounded-full shadow-lg flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+    +
+</a>
+
 {% endblock %}
