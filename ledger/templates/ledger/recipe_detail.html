@@ -6,7 +6,7 @@
 {% block content %}  
 <section class="px-4 md:px-8 mt-6">
     
-    <div class="max-w-4xl mx-auto">
+<div class="max-w-4xl mx-auto">
     
     <h2 class="text-3xl text-center font-bold text-black">{{ recipe.name }}</h2>
     <p class="text-black text-center mb-2">By {{ recipe.author.name }}</p>
@@ -40,33 +40,33 @@
         <p class="text-black mt-4">No images yet.</p>
     {% endif %}
 
-        <div class="mt-6">
-            <h3 class="text-xl font-semibold mb-2">Description</h3>        <!-- text-x1 → text-xl -->
-            <p class="text-black-700">{{ recipe.description }}</p>
-        </div>
-
-        <div class="mt-6">
-            <h3 class="text-xl font-semibold mb-2">Ingredients</h3>        <!-- text-x1 → text-xl -->
-            <ul class="list-disc list-inside space-y-1">                    <!-- list inside-space-y-1 → list-inside space-y-1 -->
-                {% for item in recipe.ingredients.all %}
-                    <li class="text-black">{{ item.quantity }} <b>{{ item.ingredient.name }}</b></li>
-                {% empty %}
-                    <li class="text-black">No ingredients yet.</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="flex gap-3 mt-8">
-            <a href="{% url 'ledger:recipe-edit' pk=recipe.pk %}"
-                class="bg-slate-300 text-black px-5 py-2 rounded hover:bg-slate-500 font-medium">
-                Edit
-            </a>
-            <a href="{% url 'ledger:recipe-delete' pk=recipe.pk %}"
-                class="bg-red-500 text-white px-5 py-2 rounded hover:bg-red-800 font-medium">
-                Delete
-            </a>
-        </div>
-
+    <div class="mt-6">
+        <h3 class="text-xl font-semibold mb-2">Description</h3>        <!-- text-x1 → text-xl -->
+        <p class="text-black-700">{{ recipe.description }}</p>
     </div>
+
+    <div class="mt-6">
+        <h3 class="text-xl font-semibold mb-2">Ingredients</h3>        <!-- text-x1 → text-xl -->
+        <ul class="list-disc list-inside space-y-1">                    <!-- list inside-space-y-1 → list-inside space-y-1 -->
+            {% for item in recipe.ingredients.all %}
+                <li class="text-black">{{ item.quantity }} <b>{{ item.ingredient.name }}</b></li>
+            {% empty %}
+                <li class="text-black">No ingredients yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="flex gap-3 mt-8">
+        <a href="{% url 'ledger:recipe-edit' pk=recipe.pk %}"
+            class="bg-slate-300 text-black px-5 py-2 rounded hover:bg-slate-500 font-medium">
+            Edit
+        </a>
+        <a href="{% url 'ledger:recipe-delete' pk=recipe.pk %}"
+            class="bg-red-500 text-white px-5 py-2 rounded hover:bg-red-800 font-medium">
+            Delete
+        </a>
+    </div>
+
+</div>
 </section>
 {% endblock %}
