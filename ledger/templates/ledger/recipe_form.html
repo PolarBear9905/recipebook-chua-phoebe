@@ -27,12 +27,19 @@
                 <label for="{{ field.id_for_label }}" class="text-sm font-medium text-slate-700">
                     {{ field.label }}
                 </label>
+                {% if field.name == "description" %}
+                <textarea name="{{ field.name }}"
+                id="{{ field.id_for_label }}"
+                rows="5"
+                class="w-full px-3 py-2.5 text-sm text-slate-900 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ field.value|default:'' }}</textarea>
+                {% else %}
                 <input type="{{ field.field.widget.input_type }}"
-                    name="{{ field.html_name }}"
-                    id="{{ field.id_for_label }}"
-                    value="{{ field.value|default:'' }}"
-                    class="w-full px-3 py-2.5 text-sm text-slate-900 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="{{ field.html_name }}"
+                        id="{{ field.id_for_label }}"
+                        value="{{ field.value|default:'' }}"
+                        class="w-full px-3 py-2.5 text-sm text-slate-900 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                {% endif %}
                 {% if field.errors %}
                     <p class="text-red-500 text-xs">{{ field.errors|join:", " }}</p>
                 {% endif %}
@@ -77,8 +84,6 @@
                         {% endif %}
                         <input type="file" name="{{ f.image.html_name }}"
                             class="text-sm text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
-                        <button type="button" onclick="this.parentElement.remove(); updateTotalForms();"
-                            class="text-red-500 text-xs hover:underline">Remove</button>
                     </div>
                     {% endfor %}
                 </div>
@@ -102,8 +107,6 @@
                         <input type="hidden" name="images-${formCount}-id" value="">
                         <input type="file" name="images-${formCount}-image"
                             class="text-sm text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
-                        <button type="button" onclick="this.parentElement.remove(); updateTotalForms();"
-                            class="text-red-500 text-xs hover:underline">Remove</button>
                     `;
                     formList.appendChild(newForm);
                     totalForms.value = formCount + 1;
