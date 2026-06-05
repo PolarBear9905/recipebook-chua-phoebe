@@ -3,63 +3,70 @@
 
 {% block page_title %}{{ recipe.name }}{% endblock %}
 
-{% block content %}
-<div class="px-4 md:px-8 mt-6 max-w-4xl mx-auto">
-    <h2 class="text-3xl font-bold text-black">{{ recipe.name }}</h2>   <!-- text-3x1 → text-3xl -->
-    <p class="text-black mt-1">By {{ recipe.author.name }}</p>       <!-- text-gray-500-mt-1 → text-gray-500 mt-1 -->
+{% block content %}  
+<section class="px-4 md:px-8 mt-6">
+    
+    <div class="max-w-4xl mx-auto">
+    
+    <h2 class="text-3xl text-center font-bold text-black">{{ recipe.name }}</h2>
+    <p class="text-black text-center mb-2">By {{ recipe.author.name }}</p>
 
     {% if recipe.images.all %}
-    <section class="mt-6">
-        <figure class="aspect-[1024/569]">
-            <img id="featured-image"
-                class="w-full h-full rounded-md object-cover"
-                src="{{ recipe.images.first.image.url }}"
-                alt="{{ recipe.name }}" />
-        </figure>
-        {% if recipe.images.count > 1 %}
-        <ul class="grid grid-cols-3 sm:grid-cols-5 gap-4 mt-4">
-            {% for image in recipe.images.all %}
-            <li class="aspect-[18/13]">
-                <button type="button" onclick="document.getElementById('featured-image').src='{{ image.image.url }}'"
-                    class="w-full h-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded-md">
-                    <img class="w-full h-full rounded-md object-cover object-top"
-                        src="{{ image.image.url }}"
-                        alt="{{ recipe.name }}" />
-                </button>
-            </li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    </section>
+      <!-- Featured Image -->
+      <figure class="aspect-[1024/569]">
+         <img id="featured-image"
+            class="w-full h-full rounded-md object-cover"
+            src="{{ recipe.images.first.image.url }}"
+            alt="{{ recipe.name }}" />
+      </figure>
+
+      {% if recipe.images.count > 1 %}
+      <!-- Thumbnails -->
+      <ul class="grid grid-cols-3 sm:grid-cols-5 gap-4 mt-4">
+        {% for image in recipe.images.all %}
+         <li class="aspect-[18/13]">
+            <button type="button"
+                onclick="document.getElementById('featured-image').src='{{ image.image.url }}'"
+                class="w-full h-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded-md">
+               <img class="thumbnail w-full h-full rounded-md object-cover object-top border-b-2 border-black"
+                  src="{{ image.image.url }}" 
+                  alt="{{ recipe.name }}" />
+            </button>
+         </li>
+         {% endfor %}
+      </ul>
+      {% endif %}
     {% else %}
-        <p class="text-black mt-4">No images yet.</p>               <!-- text-ray-400 → text-gray-400 -->
+        <p class="text-black mt-4">No images yet.</p>
     {% endif %}
 
-    <div class="mt-6">
-        <h3 class="text-xl font-semibold mb-2">Description</h3>        <!-- text-x1 → text-xl -->
-        <p class="text-black-700">{{ recipe.description }}</p>
-    </div>
+        <div class="mt-6">
+            <h3 class="text-xl font-semibold mb-2">Description</h3>        <!-- text-x1 → text-xl -->
+            <p class="text-black-700">{{ recipe.description }}</p>
+        </div>
 
-    <div class="mt-6">
-        <h3 class="text-xl font-semibold mb-2">Ingredients</h3>        <!-- text-x1 → text-xl -->
-        <ul class="list-disc list-inside space-y-1">                    <!-- list inside-space-y-1 → list-inside space-y-1 -->
-            {% for item in recipe.ingredients.all %}
-                <li class="text-black">{{ item.quantity }} <b>{{ item.ingredient.name }}</b></li>
-            {% empty %}
-                <li class="text-black">No ingredients yet.</li>
-            {% endfor %}
-        </ul>
-    </div>
+        <div class="mt-6">
+            <h3 class="text-xl font-semibold mb-2">Ingredients</h3>        <!-- text-x1 → text-xl -->
+            <ul class="list-disc list-inside space-y-1">                    <!-- list inside-space-y-1 → list-inside space-y-1 -->
+                {% for item in recipe.ingredients.all %}
+                    <li class="text-black">{{ item.quantity }} <b>{{ item.ingredient.name }}</b></li>
+                {% empty %}
+                    <li class="text-black">No ingredients yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-    <div class="flex gap-3 mt-8">
-        <a href="{% url 'ledger:recipe-edit' pk=recipe.pk %}"
-            class="bg-slate-300 text-black px-5 py-2 rounded hover:bg-slate-500 font-medium">
-            Edit
-        </a>
-        <a href="{% url 'ledger:recipe-delete' pk=recipe.pk %}"
-            class="bg-red-500 text-white px-5 py-2 rounded hover:bg-red-800 font-medium">
-            Delete
-        </a>
+        <div class="flex gap-3 mt-8">
+            <a href="{% url 'ledger:recipe-edit' pk=recipe.pk %}"
+                class="bg-slate-300 text-black px-5 py-2 rounded hover:bg-slate-500 font-medium">
+                Edit
+            </a>
+            <a href="{% url 'ledger:recipe-delete' pk=recipe.pk %}"
+                class="bg-red-500 text-white px-5 py-2 rounded hover:bg-red-800 font-medium">
+                Delete
+            </a>
+        </div>
+
     </div>
-</div>
+</section>
 {% endblock %}
