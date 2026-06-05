@@ -37,21 +37,21 @@
       </ul>
       {% endif %}
     {% else %}
-        <p class="text-black mt-4">No images yet.</p>
+        <p class="text-black mt-4">No images yet</p>
     {% endif %}
 
     <div class="mt-6">
-        <h3 class="text-xl font-semibold mb-2">Description</h3>        <!-- text-x1 → text-xl -->
+        <h3 class="text-xl font-semibold mb-2">Description</h3>    
         <p class="text-black-700">{{ recipe.description }}</p>
     </div>
 
     <div class="mt-6">
-        <h3 class="text-xl font-semibold mb-2">Ingredients</h3>        <!-- text-x1 → text-xl -->
-        <ul class="list-disc list-inside space-y-1">                    <!-- list inside-space-y-1 → list-inside space-y-1 -->
+        <h3 class="text-xl font-semibold mb-2">Ingredients</h3>        <!-- text-x1 → extra large -->
+        <ul class="list-disc list-inside space-y-1">                    <!-- list disc to implement bullet points -->
             {% for item in recipe.ingredients.all %}
                 <li class="text-black">{{ item.quantity }} <b>{{ item.ingredient.name }}</b></li>
             {% empty %}
-                <li class="text-black">No ingredients yet.</li>
+                <li class="text-black">No ingredients yet</li>
             {% endfor %}
         </ul>
     </div>
