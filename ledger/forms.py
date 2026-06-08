@@ -14,12 +14,12 @@ class RecipeIngredientForm(forms.ModelForm):
     
     class Meta:
         model = RecipeIngredient
-        fields = ['ingredient', 'quantity']
+        fields = ['quantity', 'ingredient']
 
 IngredientFormSet = inlineformset_factory(
     Recipe, RecipeIngredient,
     form=RecipeIngredientForm,
-    extra=1,
+    extra=0,
     can_delete=True
 )
 
