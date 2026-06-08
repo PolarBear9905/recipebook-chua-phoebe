@@ -33,12 +33,13 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
+    os.getenv('RAILWAY_PUBLIC_DOMAIN'),
     'localhost',
     '127.0.0.1', 
-    'recipebook-chua-phoebe.onrender.com',]
+]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://recipebook-chua-phoebe.onrender.com'
+    'https://recipebook-chua-phoebe-production.up.railway.app'
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -147,12 +148,10 @@ CLOUDINARY_STORAGE = {
 MEDIA_URL = '/media/'
 STORAGES = {
     "staticfiles" : {
-        "BACKEND" : "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND" : "whitenoise.storage.CompressedStaticFilesStorage",
     } 
 
 }
-STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
-
 
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/recipes/list'
