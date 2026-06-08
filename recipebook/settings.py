@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://recipebook-chua-phoebe.onrender.com',]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'recipebook-chua-phoebe.onrender.com',]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://recipebook-chua-phoebe.onrender.com'
