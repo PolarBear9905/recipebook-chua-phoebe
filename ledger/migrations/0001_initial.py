@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
             name='RecipeImage',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ImageField(max_length=500, storage=recipebook.storage.CloudinaryStorage(), upload_to='images/')),
+                ('image', models.ImageField(max_length=1000, storage=recipebook.storage.CloudinaryStorage(), upload_to='images/')),
                 ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='ledger.recipe')),
             ],
         ),
