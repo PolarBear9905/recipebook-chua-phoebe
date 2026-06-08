@@ -10,7 +10,9 @@ class RecipeForm(forms.ModelForm):
 
 
 class RecipeIngredientForm(forms.ModelForm):
-    ingredient = forms.ModelChoiceField(queryset=Ingredient.objects.all().order_by('name'))
+    ingredient = forms.ModelChoiceField(
+        queryset=Ingredient.objects.all().order_by('name'),
+    )
     
     class Meta:
         model = RecipeIngredient
