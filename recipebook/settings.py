@@ -29,7 +29,11 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://recipebook-chua-phoebe.onrender.com',]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://recipebook-chua-phoebe.onrender.com'
+]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -43,8 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'cloudinary_storage',
-    'django.contrib.staticfiles',
     'cloudinary',
+    'django.contrib.staticfiles',
     'tailwind',
     'theme',
     'ledger',
