@@ -33,14 +33,10 @@ def recipe_add(request):
             recipe.author = profile
             recipe.save()
 
-            for ingredient_form in ingredient_formset:
-                if ingredient_form.cleaned_data.get('ingredient'):
-                    RecipeIngredient.objects.create(
-                        recipe=recipe,
-                        ingredient=ingredient_form.cleaned_data['ingredient'],
-                        quantity=ingredient_form.cleaned_data['quantity']
-                    )
+            ingredient_formset.instance = recipe
+            ingredient_formset.save()
             
+            image_formset.instance = recipe
             images = image_formset.save(commit=False)
             for image in images:
                 image.recipe = recipe
@@ -72,19 +68,9 @@ def recipe_edit(request,pk):
         if form.is_valid() and ingredient_formset.is_valid() and image_formset.is_valid():
             form.save()
             
-            for ingredient_form in ingredient_formset:
-                if ingredient_form.cleaned_data.get('ingredient'):
-                    if ingredient_form.instance.pk:
-                        ingredient_form.instance.ingredient = ingredient_form.cleaned_data['ingredient']
-                        ingredient_form.instance.quantity = ingredient_form.cleaned_data['quantity']
-                        ingredient_form.instance.save()
-                    else:
-                        RecipeIngredient.objects.create(
-                        recipe=recipe,
-                        ingredient=ingredient_form.cleaned_data['ingredient'],
-                        quantity=ingredient_form.cleaned_data['quantity']
-                    )
-            
+            ingredient_formset.save()
+
+            image_formset.instance = recipe            
             images = image_formset.save(commit=False)
             for image in images:
                 image.recipe = recipe
