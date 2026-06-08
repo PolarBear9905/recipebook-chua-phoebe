@@ -12,13 +12,16 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-load_dotenv()
 import dj_database_url 
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+try:
+    load_dotenv()
+except UnicodeDecodeError:
+    load_dotenv(encoding='utf-16')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -29,7 +32,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'recipebook-chua-phoebe.onrender.com',]
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1', 
+    'recipebook-chua-phoebe.onrender.com',]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://recipebook-chua-phoebe.onrender.com'
@@ -98,7 +104,7 @@ WSGI_APPLICATION = 'recipebook.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        default=os.getenv('DATABASE_URL'),
         conn_max_age=600
     )
 }
@@ -126,33 +132,33 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'Asia/Manila'
-
-USE_I18N = True
-
-USE_TZ = True
-
-
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
+
+MEDIA_URL = '/media/'
+STORAGES = {
+    "default": {
+        "BACKEND" : "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles" : {
+        "BACKEND" : "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    } 
+
+}
 
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/recipes/list'
 LOGOUT_REDIRECT_URL = '/accounts/login'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'Asia/Manila'
+USE_I18N = True
+USE_TZ = True
