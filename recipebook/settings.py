@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
+import dj_database_url 
 from pathlib import Path
 from dotenv import load_dotenv
-import dj_database_url 
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -150,11 +150,11 @@ STORAGES = {
         "BACKEND" : "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles" : {
-        "BACKEND" : "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND" : "whitenoise.storage.StaticFilesStorage",
     } 
 
 }
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
 
 
 LOGIN_URL = '/accounts/login'
@@ -164,3 +164,4 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Manila'
 USE_I18N = True
 USE_TZ = True
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
