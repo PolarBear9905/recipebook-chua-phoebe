@@ -71,7 +71,7 @@ class RecipeImage(models.Model):
     image = models.ImageField(
         upload_to='images/',
         storage=CloudinaryStorage(),
-        max_length=1000,
+        max_length=500,
         null=False
     )
 
