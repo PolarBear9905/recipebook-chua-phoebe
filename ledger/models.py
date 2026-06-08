@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from recipebook.storage import CloudinaryStorage
 
 
 class Profile(models.Model):
@@ -67,7 +68,12 @@ class RecipeIngredient(models.Model):
 
 
 class RecipeImage(models.Model):
-    image = models.ImageField(upload_to='images/', null=False)
+    image = models.ImageField(
+        upload_to='images/',
+        storage=CloudinaryStorage(),
+        max_length=500,
+        null=False
+    )
 
     recipe = models.ForeignKey(
         Recipe,
