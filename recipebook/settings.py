@@ -148,10 +148,12 @@ cloudinary.config(
 MEDIA_URL = '/media/'
 
 STORAGES = {
-    "staticfiles" : {
-        "BACKEND" : "whitenoise.storage.CompressedStaticFilesStorage",
-    } 
-
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+    "default": {
+        "BACKEND": "recipebook.storage.CloudinaryStorage",
+    },
 }
 
 LOGIN_URL = '/accounts/login'
