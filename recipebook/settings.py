@@ -146,11 +146,8 @@ CLOUDINARY_STORAGE = {
 
 MEDIA_URL = '/media/'
 STORAGES = {
-    "default": {
-        "BACKEND" : "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
     "staticfiles" : {
-        "BACKEND" : "whitenoise.storage.StaticFilesStorage",
+        "BACKEND" : "whitenoise.storage.CompressedManifestStaticFilesStorage",
     } 
 
 }
