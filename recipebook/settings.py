@@ -34,7 +34,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
-    os.getenv('RAILWAY_PUBLIC_DOMAIN'),
+    'recipebook-chua-phoebe-production.up.railway.app',
     'localhost',
     '127.0.0.1', 
 ]
