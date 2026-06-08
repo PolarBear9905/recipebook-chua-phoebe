@@ -9,8 +9,6 @@ def recipe_list(request):
     ctx = {"recipes": recipes}
     return render(request, "ledger/recipe_list.html", ctx)
 
-
-@login_required
 def recipe_detail(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     ctx = {"recipe": recipe}
